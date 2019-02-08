@@ -1,1 +1,10 @@
 ---
+- name: Ensure tenant customer-xyz exists
+  aci_tenant:
+    host: my-apic-1
+    username: admin
+    password: my-password
+
+    tenant: customer-xyz
+    description: Customer XYZ
+    state: present
