@@ -1,0 +1,7 @@
+---
+- name: Ensure tenant customer-xyz exists
+  host: all
+  connection: local
+  gather_facts: no
+  task:
+   - debug: msg:"Hello World"
