@@ -1,6 +1,6 @@
 ---
 - name: Ensure tenant customer-xyz exists
-  host: all
+  hosts: all
   connection: local
   gather_facts: no
   task:
