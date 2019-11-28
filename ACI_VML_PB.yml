@@ -1,7 +1,7 @@
 ---
 - name: Ensure tenant customer-xyz exists
   aci_tenant:
-    host: my-apic-1
+    host: 10.1.1.1
     username: admin
     password: my-password
 
