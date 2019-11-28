@@ -1,10 +1,8 @@
 ---
 - name: Ensure tenant customer-xyz exists
-  aci_tenant:
-    host: 10.1.1.1
-    username: admin
-    password: my-password
-
-    tenant: customer-xyz
-    description: Customer XYZ
-    state: present
+  host: all
+  connection: local
+  gather_facts: no
+  task:
+   - debug: msg:"Hello World"
+  
