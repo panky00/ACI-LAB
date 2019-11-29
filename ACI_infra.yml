@@ -1,0 +1,39 @@
+---
+- name: Playbook for Bring UP ACI Fabric
+  hosts: all
+  connection: local
+  gather_facts: no
+
+  
+# ============================================================================================================================================================
+# Import Fabric Configuration Files
+# ============================================================================================================================================================
+
+  vars:
+    config_file: "./Fabric01/ACI_fabric.yml"
+    snapshot_tag: "1001" # must be set by AWX
+
+  tasks:
+    - name: Import Main configuration file
+      include_vars:
+        file: "{{ config_file }}" # need to use a variable to set correct path
+      tags: always,vars
+
+
+# ============================================================================================================================================================
+# Take a snaphot of current configuration
+# ============================================================================================================================================================
+
+  - name: Create a Snapshot
+    aci_config_snapshot:
+      host: "{{ apic_host }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      state: present
+      export_policy: config_backup
+      max_count: 10
+      description: Backups taken before new configs are applied.
+    delegate_to: localhost
+    tags: always,snapshot
+    
+    
