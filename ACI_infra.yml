@@ -45,6 +45,7 @@
 
     - name: Add fabric node
       aci_fabric_node:
+      validate_certs: "false"
         host: "{{ apic_host }}"
         username: "{{ username }}"
         password: "{{ password }}"
