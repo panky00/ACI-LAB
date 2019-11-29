@@ -24,16 +24,16 @@
 # Take a snaphot of current configuration
 # ============================================================================================================================================================
 
-  - name: Create a Snapshot
-    aci_config_snapshot:
-      host: "{{ apic_host }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
-      state: present
-      export_policy: config_backup
-      max_count: 10
-      description: Backups taken before new configs are applied.
-    delegate_to: localhost
-    tags: always,snapshot
+    - name: Create a Snapshot
+      aci_config_snapshot:
+        host: "{{ apic_host }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        state: present
+        export_policy: config_backup
+        max_count: 10
+        description: Backups taken before new configs are applied.
+      delegate_to: localhost
+      tags: always,snapshot
     
     
