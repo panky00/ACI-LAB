@@ -20,3 +20,4 @@ switchs:
 
   - { serial: "TEP-1-101", nodeId: "101", name: "LEAF101" }
   - { serial: "TEP-1-103", nodeId: "103", name: "SPINE103" }
+  - { serial: "TEP-1-102", nodeId: "102", name: "LEAF102" }
