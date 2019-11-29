@@ -36,5 +36,26 @@
         validate_certs: "false"
       delegate_to: localhost
       tags: always,snapshot
-    
+
+
+# ============================================================================================================================================================
+# Switch Provisioning
+# >> GUI >> Fabric > Fabric Membership
+# ============================================================================================================================================================
+
+    - name: Add fabric node
+      aci_fabric_node:
+        host: "{{ apic_host }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        serial: {{ item.serial }}
+        node_id: {{ item.nodeId }}
+        switch: {{ item.name }}
+        state: present
+      delegate_to: localhost
+      with_items: "{{ switchs }}"
+      loop_control:
+        pause: 1
+      when: switchs is defined
+      tags: switchs
     
