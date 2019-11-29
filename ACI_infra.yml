@@ -48,9 +48,9 @@
         host: "{{ apic_host }}"
         username: "{{ username }}"
         password: "{{ password }}"
-        serial: {{ item.serial }}
-        node_id: {{ item.nodeId }}
-        switch: {{ item.name }}
+        serial: "{{ item.serial }}"
+        node_id: "{{ item.nodeId }}"
+        switch: "{{ item.name }}"
         state: present
       delegate_to: localhost
       with_items: "{{ switchs }}"
