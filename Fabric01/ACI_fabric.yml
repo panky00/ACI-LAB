@@ -6,7 +6,7 @@
 # ACI FABRIC CONFIGURATION
 # =========================================================================================================================================================
 
-fabric_perimeter: "PLT_DC5"
+fabric_perimeter: "Lab"
 apic_host: "192.168.1.144" #APIC_1
 username : "admin"
 password : "cisco123"
