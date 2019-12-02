@@ -1,0 +1,123 @@
+- name: BARE METAL PROVISIONING FOR PHYSICAL DOMAIN
+  hosts: dc4apic01
+  connection: local
+  gather_facts: False
+  vars_prompt:
+    - name: "policy_group"
+      prompt: "What will be your new Int policy roup name (SRV_NAME-INT-POLICY-GRP)?"
+      private: no
+    - name: "aep"
+      prompt: "What will be your AEP name (Choose from list below)?
+                    BCKP-AEP  
+                    HBE1-AEP
+                    HBE2-AEP
+                    HBE3-AEP
+                    IBE1-AEP
+                    L2OUT-IBE2-AEP
+                    HWT1-AEP
+                    IWT1-AEP
+                    SHAR-AEP
+                    MDOM-AEP"
+      private: no
+    - name: "speed"
+      prompt: "What will be your Link speed (Choose from list below)?
+                    1G-link-autoNeg-ON
+                    10G-link-autoNeg-ON
+                    25G-link-autoneg-ON" 
+      private: no  
+    - name: "leaf_interface_profile_a"
+      prompt: "Provide the existing leaf_interface_profile name for your 1st LEAF (Ex: LEAF_[nodeID]_INT)?"
+      private: no
+    - name: "leaf_interface_profile_b"
+      prompt: "Provide the existing leaf_interface_profile name for your 2nd LEAF (Ex: LEAF_[nodeID]_INT)?"
+      private: no
+    - name: "access_port_selector_a"
+      prompt: "What will be the Interface_selector name for your LEAFS (Ex:1_2 for eth1/2)?"
+      private: no
+    - name: "from"
+      prompt: "Interface ID from (Ex:2 for eth1/2)?"
+      private: no
+    - name: "to"
+      prompt: "Interface ID to (Ex:2 for eth1/2)?"
+      private: no
+    - name: "leafs"
+      prompt: "Provide the LEAFS ID where your Server connects Ex: 1101,1201 (for vPC)?"
+      private: no
+    - name: "ap"
+      prompt: "What will be your AP name  (EXTERNAL-HOSTING or INTERNAL-HOSTING)?"
+      private: no
+    - name: "epg"
+      prompt: "What will be your EPG name (Ex: EAxxx-PodID-ROLE)?"
+      private: no 
+    - name: "vlan_prov"
+      prompt: "What will be your provision VLAN ID (Ex: 4097)?"
+      private: no
+  
+  tasks:
+    - name: TASK 01 - CREATE INTERFACE POLICY GROUP, vPC, LACP-Active
+      aci_interface_policy_leaf_policy_group:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        validate_certs: False
+        state: "present"
+        policy_group: "{{ policy_group }}"
+        lag_type: "node"
+        aep: "{{ aep }}"
+        cdp_policy: "CDP-enable"
+        link_level_policy: "{{ speed }}"
+        lldp_policy: "LLDP-enable"
+        mcp_policy: "default"
+        port_channel_policy: "LACP-active"
+        description:  "Interface Policy Group Created from ACI"
+
+    - name: TASK 02 - ASSOCIATE INTERFACE PROFILE of 1st LEAF TO INT SELECTOR
+      aci_access_port_to_interface_policy_leaf_profile:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        validate_certs: False
+        state: "present"
+        leaf_interface_profile: "{{ leaf_interface_profile_a }}"
+        access_port_selector: "{{ access_port_selector_a }}"
+        leaf_port_blk: "{{ access_port_selector_a }}"
+        from_port: "{{ from_a}}"
+        to_port: "{{ to_a }}"
+        interface_type: "vpc"       
+        policy_group: "{{ policy_group }}"
+        leaf_port_blk_description: "Created from ansible"
+
+    - name: TASK 02-BIS - ASSOCIATE INTERFACE PROFILE of 2nd LEAF TO INT SELECTOR
+      aci_access_port_to_interface_policy_leaf_profile:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        validate_certs: False
+        state: "present"
+        leaf_interface_profile: "{{ leaf_interface_profile_b }}"
+        access_port_selector: "{{ access_port_selector_b }}"
+        leaf_port_blk: "{{ access_port_selector_b }}"
+        from_port: "{{ from_b }}"
+        to_port: "{{ to_b }}"
+        interface_type: "vpc"
+        policy_group: "{{ policy_group }}"
+        leaf_port_blk_description: "Created from ansible"
+
+    - name: TASK 03 - STATIC BINDING TO EPG
+      aci_static_binding_to_epg:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        validate_certs: False
+        state: "present"
+        tenant: "LEGACY"
+        ap: "{{ ap }}"
+        epg: "{{ epg }}"
+        encap_id: "{{ vlan }}"
+        deploy_immediacy: "immediate"
+        interface_mode: "802.1p"
+        interface_type: "vpc"
+        pod_id: 1
+        leafs: "{{ leafs }}"
+        interface: "{{ policy_group }}"
+
