@@ -1,0 +1,28 @@
+[‎13/‎12/‎2019 11:36]  Sharma, Pankaj (ESI):  
+- name: check csv loop example
+  hosts: localhost
+  connection: local
+  gather_facts: fno
+  tasks:
+   - name: import csv
+     csv_to_facts:
+       src: "{{ playbook_dir }}/fw_list.csv"  
+   - name: "display all variables"
+     raw: echo {{ item.firewall }}
+     loop: '{{ spreadsheet }}'
+
+---
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  ignore_errors: yes
+
+  vars:
+    contents: "{{ lookup('file', './fw_list.csv') }}"
+    lines: "{{ contents.split(',) }}"
+
+  tasks:
+    - debug: msg="Iterating over CSV lines = {{ item }}"
+      with_items: 
+        - "{{ lines }}" 
+ 
