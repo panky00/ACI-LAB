@@ -6,8 +6,8 @@
   tasks:
    - name: import csv
      csv_to_facts:
-       src: "{{ playbook_dir }}/fw_list.csv"  
+       src: "{{ playbook_dir }}/Fabric01/switches.csv"  
    - name: "display all variables"
-     raw: echo {{ item.firewall }}
+     raw: echo {{ item.serial }}
      loop: '{{ spreadsheet }}'
 
