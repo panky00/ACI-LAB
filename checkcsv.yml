@@ -6,7 +6,7 @@
   tasks:
     - name:  import csv
       csv_to_facts:
-        src: "{{ playbook_dir }}/Fabric01/switches.csv" 
+        src: '{{ playbook_dir }}/Fabric01/switches.csv'
     - name:  import csv
         raw: echo '{{ item.serial }}'    
         loop: '{{ spreadsheet }}'
