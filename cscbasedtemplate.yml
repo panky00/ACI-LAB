@@ -1,0 +1,29 @@
+---
+
+- name: Create a VIP, pool and pool members
+  hosts: all
+  connection: local
+
+  vars:
+    provider:
+      password: 2G*0n1.E6
+      server: 7.130.130.33
+      user: admin
+      validate_certs: no
+      server_port: 443
+  tasks:
+   - name: Add members to pool
+     bigip_pool_member:
+       provider: "{{ provider }}"
+       description: "webserver {{ item.name }}"
+       host: "{{ item.host }}"
+       name: "{{ item.name }}"
+       pool: test_ansible
+       port: 80
+     with_items:
+       - host: "{{ lookup('csvfile', '1 file=pool.csv delimiter=, col=1') }}"
+         name: "{{ lookup('csvfile', '1 file=pool.csv delimiter=, col=2') }}"
+       - host: "{{ lookup('csvfile', '2 file=pool.csv delimiter=, col=1') }}"
+         name: "{{ lookup('csvfile', '2 file=pool.csv delimiter=, col=2') }}"
+
+     delegate_to: localhost
