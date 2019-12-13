@@ -7,3 +7,6 @@
     - name:  import csv
       csv_to_facts:
         src: '{{ playbook_dir }}/Fabric01/switches.csv'
+    - name:  read csv
+      command: echo "{{ item }}"
+      loop: "{{ spreadsheet }}"
