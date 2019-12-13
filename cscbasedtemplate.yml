@@ -6,7 +6,7 @@
 
   vars:
     provider:
-      password: 2G*0n1.E6
+      password: xxxxx
       server: 7.130.130.33
       user: admin
       validate_certs: no
