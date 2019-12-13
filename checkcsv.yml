@@ -1,13 +1,13 @@
 ---
--name: check csv loop example
- hosts: localhost
- connection: local
- gather_facts: no
- tasks:
-- name: import csv
-  csv_to_facts:
-    src: "{{ playbook_dir }}/Fabric01/switches.csv"  
-- name: "display all variables"
-   raw: echo {{ item.serial }}
-   loop: '{{ spreadsheet }}'
+- name: check csv loop example
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks:
+-  name: import csv
+   csv_to_facts:
+     src: "{{ playbook_dir }}/Fabric01/switches.csv"  
+-  name: "display all variables"
+    raw: echo {{ item.serial }}
+    loop: '{{ spreadsheet }}'
 
