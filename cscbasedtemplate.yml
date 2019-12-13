@@ -27,3 +27,9 @@
          name: "{{ lookup('csvfile', '2 file=pool.csv delimiter=, col=2') }}"
 
      delegate_to: localhost
+
+
+
+id,host,name
+1,14.14.14.14,web14
+2,12.12.12.12,web12
