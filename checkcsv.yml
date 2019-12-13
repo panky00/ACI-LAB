@@ -2,8 +2,8 @@
 - name: check csv loop example
   hosts: all
   connection: local
-  gather_facts: fno
-  tasks:
+  gather_facts: no
+  tasks:
    - name: import csv
      csv_to_facts:
        src: "{{ playbook_dir }}/Fabric01/switches.csv"  
