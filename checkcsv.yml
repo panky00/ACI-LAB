@@ -1,6 +1,6 @@
 ---
 - name: check csv loop example
-  hosts: localhost
+  hosts: all
   connection: local
   gather_facts: fno
   tasks:
